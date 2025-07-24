@@ -8,16 +8,10 @@ This is **PocketCoder** - an AI coding agent built using Cursor to demonstrate "
 
 ### Architecture
 
-The project follows a **dual-architecture pattern**:
-
-1. **Python Backend (Main Agent)**: Uses the PocketFlow framework for LLM orchestration
+**Python Backend (Main Agent)**: Uses the PocketFlow framework for LLM orchestration
    - `main.py` - Entry point with CLI argument parsing
    - `flow.py` - Main agent flow with decision nodes and action execution
    - `utils/` - Utility functions for file operations, LLM calls, and search
-
-2. **React Frontend (Example Project)**: A demo SaaS homepage for the agent to modify
-   - `project/` - Vite + React + TypeScript + Tailwind CSS setup
-   - Serves as the target for code editing demonstrations
 
 ### Key Design Patterns
 
@@ -186,25 +180,12 @@ These system designs are a collaboration between humans and AI assistants, with 
 
 ## Example LLM Project File Structure
 
-```
-my_project/
-├── main.py
-├── flow.py
-├── utils/
-│   ├── __init__.py
-│   ├── call_llm.py
-│   └── search_web.py
-├── requirements.txt
-└── docs/
-    └── design.md
-```
-
 - **`docs/design.md`**: Contains project documentation for each step above. This should be high-level and no-code.
 - **`utils/`**: Contains all utility functions.
   - It’s recommended to dedicate one Python file to each API call, for example `call_llm.py` or `search_web.py`.
   - Each file should also include a `main()` function to try that API call
-- **`flow.py`**: Implements the system's flow, starting with node definitions followed by the overall structure.
-- **`main.py`**: Serves as the project’s entry point.
+- **`src/flow.py`**: Implements the system's flow, starting with node definitions followed by the overall structure.
+- **`src/main.py`**: Serves as the project’s entry point.
 
 ================================================
 File: docs/index.md
