@@ -1,7 +1,7 @@
 import os
 import argparse
 import logging
-from flow import coding_agent_flow
+from .flow import coding_agent_flow
 
 # Set up logging
 logging.basicConfig(

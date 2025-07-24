@@ -33,7 +33,7 @@ def test_mock_llm_fixture(mock_llm_response):
     """Test that LLM mocking fixture works."""
     # Import here to avoid import issues if utils aren't ready
     try:
-        from utils.call_llm import call_llm
+        from src.utils.call_llm import call_llm
         result = call_llm("test prompt")
         assert result == "Mocked LLM response"
         mock_llm_response.assert_called_once_with("test prompt")
@@ -46,12 +46,12 @@ def test_project_structure():
     project_root = Path(__file__).parent.parent
     
     # Check main files exist
-    assert (project_root / "main.py").exists()
-    assert (project_root / "flow.py").exists()
+    assert (project_root / "src" / "main.py").exists()
+    assert (project_root / "src" / "flow.py").exists()
     assert (project_root / "requirements.txt").exists()
     
     # Check utils directory exists
-    assert (project_root / "utils").is_dir()
+    assert (project_root / "src" / "utils").is_dir()
     
     # Check test structure
     assert (project_root / "tests").is_dir()

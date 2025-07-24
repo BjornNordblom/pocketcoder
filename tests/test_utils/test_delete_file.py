@@ -4,7 +4,7 @@ import pytest
 import os
 import tempfile
 from pathlib import Path
-from utils.delete_file import delete_file
+from src.utils.delete_file import delete_file
 
 
 class TestDeleteFile:

@@ -5,7 +5,7 @@ import os
 import json
 import tempfile
 from unittest.mock import Mock, patch, mock_open
-from utils.call_llm import call_llm, clear_cache
+from src.utils.call_llm import call_llm, clear_cache
 
 
 class TestCallLLM:
@@ -29,8 +29,8 @@ class TestCallLLM:
         if os.path.exists(cache_file):
             os.remove(cache_file)
     
-    @patch('utils.call_llm.cache_file')
-    @patch('utils.call_llm.AnthropicVertex')
+    @patch('src.utils.call_llm.cache_file')
+    @patch('src.utils.call_llm.AnthropicVertex')
     def test_call_llm_without_cache(self, mock_anthropic_class, mock_cache_file, mock_anthropic_response, temp_cache_file):
         """Test LLM call without cache."""
         mock_cache_file.return_value = temp_cache_file
@@ -48,14 +48,14 @@ class TestCallLLM:
         assert call_args[1]['max_tokens'] == 20000
         assert call_args[1]['messages'] == [{"role": "user", "content": "test prompt"}]
     
-    @patch('utils.call_llm.AnthropicVertex')
+    @patch('src.utils.call_llm.AnthropicVertex')
     def test_call_llm_with_cache_miss(self, mock_anthropic_class, mock_anthropic_response, temp_cache_file):
         """Test LLM call with cache miss."""
         mock_client = Mock()
         mock_client.messages.create.return_value = mock_anthropic_response
         mock_anthropic_class.return_value = mock_client
         
-        with patch('utils.call_llm.cache_file', temp_cache_file):
+        with patch('src.utils.call_llm.cache_file', temp_cache_file):
             result = call_llm("test prompt", use_cache=True)
             
             assert result == "Test response from API"
@@ -74,14 +74,14 @@ class TestCallLLM:
         with open(temp_cache_file, 'w') as f:
             json.dump(cache_data, f)
         
-        with patch('utils.call_llm.cache_file', temp_cache_file):
-            with patch('utils.call_llm.AnthropicVertex') as mock_anthropic:
+        with patch('src.utils.call_llm.cache_file', temp_cache_file):
+            with patch('src.utils.call_llm.AnthropicVertex') as mock_anthropic:
                 result = call_llm("test prompt", use_cache=True)
                 
                 assert result == "Cached response"
                 mock_anthropic.assert_not_called()  # Should not call API
     
-    @patch('utils.call_llm.AnthropicVertex')
+    @patch('src.utils.call_llm.AnthropicVertex')
     def test_call_llm_cache_file_corruption(self, mock_anthropic_class, mock_anthropic_response, temp_cache_file):
         """Test handling of corrupted cache file."""
         mock_client = Mock()
@@ -92,7 +92,7 @@ class TestCallLLM:
         with open(temp_cache_file, 'w') as f:
             f.write("invalid json content")
         
-        with patch('utils.call_llm.cache_file', temp_cache_file):
+        with patch('src.utils.call_llm.cache_file', temp_cache_file):
             result = call_llm("test prompt", use_cache=True)
             
             assert result == "Test response from API"
@@ -107,7 +107,7 @@ class TestCallLLM:
         
         assert os.path.exists(temp_cache_file)
         
-        with patch('utils.call_llm.cache_file', temp_cache_file):
+        with patch('src.utils.call_llm.cache_file', temp_cache_file):
             clear_cache()
             
             assert not os.path.exists(temp_cache_file)
@@ -119,18 +119,18 @@ class TestCallLLM:
             os.remove(temp_cache_file)
         
         # Should not raise exception
-        with patch('utils.call_llm.cache_file', temp_cache_file):
+        with patch('src.utils.call_llm.cache_file', temp_cache_file):
             clear_cache()
     
     @patch.dict(os.environ, {'ANTHROPIC_REGION': 'us-west1', 'ANTHROPIC_PROJECT_ID': 'test-project'})
-    @patch('utils.call_llm.AnthropicVertex')
+    @patch('src.utils.call_llm.AnthropicVertex')
     def test_environment_variables(self, mock_anthropic_class, mock_anthropic_response, temp_cache_file):
         """Test that environment variables are used correctly."""
         mock_client = Mock()
         mock_client.messages.create.return_value = mock_anthropic_response
         mock_anthropic_class.return_value = mock_client
         
-        with patch('utils.call_llm.cache_file', temp_cache_file):
+        with patch('src.utils.call_llm.cache_file', temp_cache_file):
             call_llm("test prompt", use_cache=False)
             
             mock_anthropic_class.assert_called_with(
@@ -138,20 +138,20 @@ class TestCallLLM:
                 project_id="test-project"
             )
     
-    @patch('utils.call_llm.AnthropicVertex')
+    @patch('src.utils.call_llm.AnthropicVertex')
     def test_api_error_handling(self, mock_anthropic_class, temp_cache_file):
         """Test handling of API errors."""
         mock_client = Mock()
         mock_client.messages.create.side_effect = Exception("API Error")
         mock_anthropic_class.return_value = mock_client
         
-        with patch('utils.call_llm.cache_file', temp_cache_file):
+        with patch('src.utils.call_llm.cache_file', temp_cache_file):
             with pytest.raises(Exception) as exc_info:
                 call_llm("test prompt", use_cache=False)
             
             assert "API Error" in str(exc_info.value)
     
-    @patch('utils.call_llm.AnthropicVertex')
+    @patch('src.utils.call_llm.AnthropicVertex')
     def test_cache_save_error_handling(self, mock_anthropic_class, mock_anthropic_response):
         """Test handling of cache save errors."""
         # Use an invalid cache file path to trigger save error
@@ -161,19 +161,19 @@ class TestCallLLM:
         mock_anthropic_class.return_value = mock_client
         
         # Should not raise exception even if cache save fails
-        with patch('utils.call_llm.cache_file', invalid_cache_file):
+        with patch('src.utils.call_llm.cache_file', invalid_cache_file):
             result = call_llm("test prompt", use_cache=True)
             assert result == "Test response from API"
     
-    @patch('utils.call_llm.logger')
-    @patch('utils.call_llm.AnthropicVertex')
+    @patch('src.utils.call_llm.logger')
+    @patch('src.utils.call_llm.AnthropicVertex')
     def test_logging_functionality(self, mock_anthropic_class, mock_logger, mock_anthropic_response, temp_cache_file):
         """Test that logging works correctly."""
         mock_client = Mock()
         mock_client.messages.create.return_value = mock_anthropic_response
         mock_anthropic_class.return_value = mock_client
         
-        with patch('utils.call_llm.cache_file', temp_cache_file):
+        with patch('src.utils.call_llm.cache_file', temp_cache_file):
             call_llm("test prompt", use_cache=False)
             
             # Check that logging was called

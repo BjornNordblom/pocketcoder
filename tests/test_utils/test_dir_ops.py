@@ -5,7 +5,7 @@ import os
 import tempfile
 import shutil
 from pathlib import Path
-from utils.dir_ops import list_dir, _build_tree_str
+from src.utils.dir_ops import list_dir, _build_tree_str
 
 
 class TestListDir:
@@ -159,7 +159,7 @@ class TestListDir:
         assert success is True
         assert isinstance(tree_str, str)
         # Should contain some common project files
-        assert any(name in tree_str for name in ["main.py", "flow.py", "utils", "tests"])
+        assert any(name in tree_str for name in ["src", "tests"])
 
 
 class TestBuildTreeStr:

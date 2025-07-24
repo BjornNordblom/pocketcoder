@@ -23,7 +23,7 @@ def sample_shared_state():
 @pytest.fixture
 def mock_llm_response():
     """Mock LLM API responses."""
-    with patch('utils.call_llm.call_llm') as mock:
+    with patch('src.utils.call_llm.call_llm') as mock:
         mock.return_value = "Mocked LLM response"
         yield mock
 

@@ -5,7 +5,7 @@ import os
 import tempfile
 import shutil
 from pathlib import Path
-from utils.search_ops import grep_search, _glob_to_regex
+from src.utils.search_ops import grep_search, _glob_to_regex
 
 
 class TestGrepSearch:

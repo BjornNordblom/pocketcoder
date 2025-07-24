@@ -1,7 +1,7 @@
 """Tests for the format_history_summary function."""
 
 import pytest
-from flow import format_history_summary
+from src.flow import format_history_summary
 
 
 class TestFormatHistorySummary:

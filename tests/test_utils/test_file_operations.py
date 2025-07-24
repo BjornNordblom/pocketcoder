@@ -3,9 +3,9 @@
 import pytest
 import os
 import tempfile
-from utils.remove_file import remove_file
-from utils.insert_file import insert_file
-from utils.replace_file import replace_file
+from src.utils.remove_file import remove_file
+from src.utils.insert_file import insert_file
+from src.utils.replace_file import replace_file
 
 
 class TestRemoveFile:

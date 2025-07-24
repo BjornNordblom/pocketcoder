@@ -26,15 +26,18 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 pip install -r requirements.txt
 
 # Run the coding agent
-python main.py --query "Your request here" --working-dir ./project
+python run.py --query "Your request here" --working-dir ./project
 
 # Interactive mode (prompts for query)
-python main.py --working-dir ./project
+python run.py --working-dir ./project
+
+# Alternative: Run directly from src
+python -m src.main --query "Your request here" --working-dir ./project
 ```
 
 ## Core Components
 
-### Main Flow (`flow.py`)
+### Main Flow (`src/flow.py`)
 
 The main agent operates through these key nodes:
 1. **MainDecisionAgent** - Analyzes user requests and selects appropriate tools
@@ -42,7 +45,7 @@ The main agent operates through these key nodes:
 3. **Edit Agent Sub-flow** - Specialized multi-step editing process
 4. **FormatResponseNode** - Generates final user-facing responses
 
-### Utility Functions (`utils/`)
+### Utility Functions (`src/utils/`)
 - `call_llm.py` - Anthropic Claude API integration
 - `read_file.py` - File reading operations
 - `replace_file.py` - Line-based file editing

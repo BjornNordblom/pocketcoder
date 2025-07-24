@@ -4,7 +4,7 @@ import pytest
 import os
 import tempfile
 from pathlib import Path
-from utils.read_file import read_file
+from src.utils.read_file import read_file
 
 
 class TestReadFile:
