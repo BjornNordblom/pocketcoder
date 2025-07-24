@@ -1,0 +1,19 @@
+decision_responses:
+  read_file: |
+    tool: read_file
+    reason: Need to examine the file contents
+    parameters:
+      target_file: example.py
+  
+  edit_file: |
+    tool: edit_file
+    reason: Need to modify the file based on user request
+    parameters:
+      target_file: example.py
+      
+  search: |
+    tool: grep_search
+    reason: Need to find specific patterns in the codebase
+    parameters:
+      pattern: "def main"
+      directory: "."

@@ -1,0 +1,9 @@
+app:
+  name: "PocketCoder"
+  version: "1.0.0"
+  debug: true
+
+database:
+  host: "localhost"
+  port: 5432
+  name: "testdb"
